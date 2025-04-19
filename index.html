@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Player Guessing Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-cricket"></i> Cricket Guesser</h1>
+            <p class="subtitle">Test your cricket knowledge!</p>
+        </header>
+
+        <main>
+            <div class="game-container">
+                <div class="game-info">
+                    <div class="country-hint">
+                        <h2>Mystery Player's Country</h2>
+                        <div class="country-name" id="country-hint">Loading...</div>
+                    </div>
+                    
+                    <div class="attempts-info">
+                        <span>Attempts Remaining: </span>
+                        <span id="attempts-count">5</span>
+                    </div>
+                </div>
+
+                <div class="guess-container">
+                    <div class="input-container">
+                        <input type="text" id="player-guess" placeholder="Enter player name..." autocomplete="off">
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
+                    </div>
+                    <button id="submit-guess" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                </div>
+
+                <div class="feedback-container" id="feedback-container">
+                    <!-- Feedback messages will be inserted here -->
+                </div>
+
+                <div class="feedback-legend">
+                    <p><i class="fas fa-arrow-up higher"></i> Mystery player has MORE than your guess</p>
+                    <p><i class="fas fa-arrow-down lower"></i> Mystery player has LESS than your guess</p>
+                    <p><i class="fas fa-equals"></i> Mystery player has the SAME as your guess</p>
+                </div>
+
+                <div class="previous-guesses">
+                    <h3>Previous Guesses</h3>
+                    <ul id="guess-history"></ul>
+                </div>
+
+                <div id="game-over-message" class="game-over-message hidden">
+                    <!-- Game over message will be inserted here -->
+                </div>
+            </div>
+        </main>
+
+        <div class="game-instructions">
+            <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+            <ul>
+                <li>You need to guess the mystery cricket player</li>
+                <li>The country of the player is shown as a hint</li>
+                <li>Type player names and select from suggestions</li>
+                <li>After each guess, you'll get feedback on how the stats compare</li>
+                <li>You have 5 attempts to guess correctly</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Cricket Guesser Game | A game for cricket enthusiasts</p>
+        </footer>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <div id="modal-content"></div>
+            <button id="new-game-btn" class="btn-new-game">
+                <i class="fas fa-redo"></i> New Game
+            </button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
