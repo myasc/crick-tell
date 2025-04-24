@@ -28,7 +28,7 @@ const newGameButton = document.getElementById('new-game-btn');
 async function initGame() {
     try {
         // Fetch player data
-        const response = await fetch('clean_player_stats.json');
+        const response = await fetch('clean_data_2.json');
         if (!response.ok) {
             throw new Error('Failed to load player data');
         }
@@ -61,7 +61,7 @@ function startNewGame() {
     mysteryPlayer = playerData[randomIndex];
     
     // Update UI
-    countryHintElement.textContent = mysteryPlayer.Team;
+    countryHintElement.innerHTML = `<span class="team-hint">${mysteryPlayer.Team}</span> <span class="format-hint">(${mysteryPlayer.Format})</span>`;
     attemptsCountElement.textContent = attemptsRemaining;
     playerGuessInput.value = '';
     feedbackContainer.innerHTML = '';
@@ -72,7 +72,7 @@ function startNewGame() {
     playerGuessInput.disabled = false;
     submitGuessButton.disabled = false;
     
-    console.log('New game started. Mystery player:', mysteryPlayer.Name);
+    console.log('New game started. Mystery player:', mysteryPlayer.Name, mysteryPlayer.Team, mysteryPlayer.Format);
 }
 
 // Set up event listeners
@@ -117,22 +117,18 @@ function showAllPlayerNames() {
     // Clear previous suggestions
     autocompleteList.innerHTML = '';
     
-    // Filter players by the mystery player's country
-    const countryPlayers = playerData
-        .filter(player => player.Team === mysteryPlayer.Team)
+    // Filter players by the mystery player's country and format
+    const filteredPlayers = playerData
+        .filter(player => player.Team === mysteryPlayer.Team && player.Format === mysteryPlayer.Format)
         .sort((a, b) => a.Name.localeCompare(b.Name));
     
-    // Display players from the mystery player's country
-    countryPlayers.forEach(player => {
+    filteredPlayers.forEach(player => {
         const suggestionItem = document.createElement('div');
         suggestionItem.textContent = `${player.Name}`;
-        
-        // Add click event to select this player
         suggestionItem.addEventListener('click', () => {
             playerGuessInput.value = player.Name;
             autocompleteList.innerHTML = '';
         });
-        
         autocompleteList.appendChild(suggestionItem);
     });
 }
@@ -140,31 +136,23 @@ function showAllPlayerNames() {
 // Show autocomplete suggestions based on input
 function showAutocompleteSuggestions() {
     const input = playerGuessInput.value.trim();
-    
-    // Clear previous suggestions
     autocompleteList.innerHTML = '';
-    
     if (input.length < 1) return;
-    
-    // Find matching players from the mystery player's country
+    // Filter players by Team and Format
     const matchingPlayers = playerData
         .filter(player => 
             player.Team === mysteryPlayer.Team && 
+            player.Format === mysteryPlayer.Format &&
             player.Name.toLowerCase().includes(input.toLowerCase())
         )
         .sort((a, b) => a.Name.localeCompare(b.Name));
-    
-    // Display matching players
     matchingPlayers.forEach(player => {
         const suggestionItem = document.createElement('div');
         suggestionItem.textContent = `${player.Name}`;
-        
-        // Add click event to select this player
         suggestionItem.addEventListener('click', () => {
             playerGuessInput.value = player.Name;
             autocompleteList.innerHTML = '';
         });
-        
         autocompleteList.appendChild(suggestionItem);
     });
 }
@@ -224,6 +212,7 @@ function handleCorrectGuess() {
         <p>You solved it in ${6 - attemptsRemaining} ${attemptsRemaining === 5 ? 'attempt' : 'attempts'}.</p>
         <div class="player-stats">
             <p>Country: ${mysteryPlayer.Team}</p>
+            <p>Format: ${mysteryPlayer.Format}</p>
             <p>Matches: ${mysteryPlayer.Matches}</p>
             <p>Runs: ${mysteryPlayer.Runs}</p>
             <p>Wickets: ${mysteryPlayer.Wickets}</p>
@@ -340,6 +329,7 @@ function handleGameOver() {
         <p>You've run out of attempts.</p>
         <p>The mystery player was: <strong>${mysteryPlayer.Name}</strong> from ${mysteryPlayer.Team}.</p>
         <div class="player-stats">
+            <p>Format: ${mysteryPlayer.Format}</p>
             <p>Matches: ${mysteryPlayer.Matches}</p>
             <p>Runs: ${mysteryPlayer.Runs}</p>
             <p>Wickets: ${mysteryPlayer.Wickets}</p>
